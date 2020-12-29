@@ -1,1 +1,5 @@
 <p>character works!</p>
+<app-search 
+    [type]="type" 
+    (charactersFetched)="onCharactersFetched($event)"
+></app-search>
