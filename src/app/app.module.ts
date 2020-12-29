@@ -10,6 +10,7 @@ import { CharacterListingComponent } from './character/character-listing/charact
 import { CharacterDetailComponent } from './character/character-detail/character-detail.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LocationComponent } from './location/location.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LocationComponent } from './location/location.component';
     SearchComponent,
     CharacterListingComponent,
     CharacterDetailComponent,
-    LocationComponent
+    LocationComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
