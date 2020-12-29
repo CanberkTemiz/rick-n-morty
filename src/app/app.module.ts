@@ -8,6 +8,7 @@ import { CharacterComponent } from './character/character.component';
 import { SearchComponent } from './shared/search/search.component';
 import { CharacterListingComponent } from './character/character-listing/character-listing.component';
 import { CharacterDetailComponent } from './character/character-detail/character-detail.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CharacterDetailComponent } from './character/character-detail/character
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
