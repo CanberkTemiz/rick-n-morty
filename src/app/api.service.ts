@@ -10,11 +10,14 @@ export class ApiService {
   constructor(private httpClient: HttpClient) { }
 
   getCharacter(term) {
-    return this.httpClient
-      .get<any>(`${this.apiURL}/character/?name=${term}`)
+    return this.httpClient.get<any>(`${this.apiURL}/character/?name=${term}`)
   }
 
   getCharacterDetail(id) {
     return this.httpClient.get<any>(`${this.apiURL}/character/${id}`)
+  }
+
+  getLocation(term) {
+    return this.httpClient.get<any>(`${this.apiURL}/location/?name=${term}`);
   }
 }

@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { 
   AfterViewInit,
   Component,
@@ -19,8 +20,9 @@ import { ApiService } from 'src/app/api.service';
 export class SearchComponent implements AfterViewInit {
   @Input() type: string;
   @Output() charactersFetched = new EventEmitter();
+  @Output() locationsFetched = new EventEmitter();
+
   @ViewChild('input') input: ElementRef;
-  
   searchText = '';
 
   constructor(private service: ApiService) {}
@@ -33,10 +35,17 @@ export class SearchComponent implements AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           this.searchText = this.input.nativeElement.value;
-          this.service.getCharacter(this.searchText).subscribe((data) => this.charactersFetched.emit(data.results))
+          this.fetchDataOf(this.searchText, this.type);
         })
     )
     .subscribe();
   }
+
+  fetchDataOf(term, type) {
+    term === "characters" 
+    ? this.service.getCharacter(this.searchText).subscribe((data) => this.charactersFetched.emit(data.results))
+    : this.service.getLocation(this.searchText).subscribe((data) => this.locationsFetched.emit(data.results))
+  }
+
 
 }
