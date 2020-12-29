@@ -35,6 +35,7 @@ export class SearchComponent implements AfterViewInit {
         debounceTime(900),
         distinctUntilChanged(),
         tap(() => {
+          console.log(this.type);
           this.searchText = this.input.nativeElement.value;
           this.fetchDataOf(this.searchText, this.type);
         })
@@ -43,9 +44,9 @@ export class SearchComponent implements AfterViewInit {
   }
 
   fetchDataOf(term, type) {
-    term === "characters" 
+    type === "character" 
     ? this.service.getCharacter(this.searchText).subscribe((data) => this.charactersFetched.emit(data.results))
-    : this.service.getLocation(this.searchText).subscribe((data) => this.locationsFetched.emit(data.results))
+    : this.service.getLocation(this.searchText).subscribe((data) => this.locationsFetched.emit(data))
   }
 
 

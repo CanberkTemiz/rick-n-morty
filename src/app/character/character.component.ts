@@ -14,7 +14,7 @@ export class CharacterComponent {
 
   onCharactersFetched(data: Character[]) {
     this.characters = data;
-    console.log(this.characters)
+    console.log(this.characters);
   }
 
 }

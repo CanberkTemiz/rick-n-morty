@@ -1,3 +1,8 @@
-<p>location works!</p>
-
-<app-search [type]="type" (locationsFetched)="onLocationsFetched($event)"></app-search>
+<div class="row">
+    <div class="col jumbotron">
+        <app-search 
+            [type]="type" 
+            (locationsFetched)="onLocationsFetched($event)"
+        ></app-search>
+    </div>
+</div>
