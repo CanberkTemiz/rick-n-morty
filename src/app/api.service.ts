@@ -15,7 +15,6 @@ export class ApiService {
   }
 
   getCharacterDetail(id) {
-    return this.httpClient
-      .get<any>(`${this.apiURL}/${id}`)
+    return this.httpClient.get<any>(`${this.apiURL}/character/${id}`)
   }
 }
