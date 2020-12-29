@@ -3,3 +3,12 @@
     [type]="type" 
     (charactersFetched)="onCharactersFetched($event)"
 ></app-search>
+
+<div *ngIf="response" class="row">
+    <div class="card-list">
+        <app-character-listing 
+            *ngFor="let char of response" 
+            [character]="char"
+        ></app-character-listing>
+    </div>
+</div> 
