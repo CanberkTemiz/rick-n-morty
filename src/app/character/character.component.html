@@ -1,9 +1,12 @@
-<p>character works!</p>
-<app-search 
-    [type]="type" 
-    (charactersFetched)="onCharactersFetched($event)"
-></app-search>
-
+<div class="row">
+    <div class="col jumbotron">
+        <app-search 
+            [type]="type" 
+            (charactersFetched)="onCharactersFetched($event)"
+        ></app-search>
+    </div>
+</div>
+    
 <div *ngIf="characters" class="row">
     <div class="card-list">
         <app-character-listing 

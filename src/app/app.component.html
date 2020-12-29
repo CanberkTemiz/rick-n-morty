@@ -1,8 +1,30 @@
-<h1>Angular Router App</h1>
-<nav>
-  <ul>
-    <li><a routerLink="/character" routerLinkActive="active">Characters</a></li>
-    <li><a routerLink="/location" routerLinkActive="active">Location</a></li>
-  </ul>
-</nav>
-<router-outlet></router-outlet>
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">RickNMorty</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a 
+            class="nav-link" 
+            routerLink="/character"
+            routerLinkActive="active"
+          >Character
+          <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a 
+            class="nav-link" 
+            routerLink="/location"
+            routerLinkActive="active"
+          >Location
+          <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <router-outlet></router-outlet>
+</div>
