@@ -13,6 +13,7 @@ export class CharacterComponent {
 
   onCharactersFetched(data: any) {
     this.response = data;
+    console.log(this.response)
   }
 
 }
