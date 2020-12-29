@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Character } from '../types';
 @Component({
   selector: 'app-character',
   templateUrl: './character.component.html',
@@ -6,14 +7,14 @@ import { Component } from '@angular/core';
 })
 export class CharacterComponent {
 
-  response = [];
+  characters: Character[] = [];
   type = 'character';
   
   constructor() { }
 
-  onCharactersFetched(data: any) {
-    this.response = data;
-    console.log(this.response)
+  onCharactersFetched(data: Character[]) {
+    this.characters = data;
+    console.log(this.characters)
   }
 
 }

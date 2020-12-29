@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Character } from 'src/app/types';
 
 @Component({
   selector: 'app-character-listing',
@@ -6,10 +7,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./character-listing.component.css']
 })
 export class CharacterListingComponent implements OnInit {
+  @Input() character: Character;
 
-  @Input() character: any;
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     console.log(this.character);

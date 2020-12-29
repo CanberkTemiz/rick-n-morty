@@ -11,6 +11,7 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/api.service';
+import { ApiResponse, Character, Location } from 'src/app/types';
 
 @Component({
   selector: 'app-search',
@@ -19,10 +20,10 @@ import { ApiService } from 'src/app/api.service';
 })
 export class SearchComponent implements AfterViewInit {
   @Input() type: string;
-  @Output() charactersFetched = new EventEmitter();
-  @Output() locationsFetched = new EventEmitter();
-
+  @Output() charactersFetched = new EventEmitter<Character[]>();
+  @Output() locationsFetched = new EventEmitter<ApiResponse<Location>>();
   @ViewChild('input') input: ElementRef;
+  
   searchText = '';
 
   constructor(private service: ApiService) {}
