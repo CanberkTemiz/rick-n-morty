@@ -9,6 +9,7 @@ import { SearchComponent } from './shared/search/search.component';
 import { CharacterListingComponent } from './character/character-listing/character-listing.component';
 import { CharacterDetailComponent } from './character/character-detail/character-detail.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LocationComponent } from './location/location.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AppRoutingModule } from './app-routing.module';
     CharacterComponent,
     SearchComponent,
     CharacterListingComponent,
-    CharacterDetailComponent
+    CharacterDetailComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,
