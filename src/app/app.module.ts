@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
 import { SearchComponent } from './shared/search/search.component';
 import { CharacterListingComponent } from './character/character-listing/character-listing.component';
+import { CharacterDetailComponent } from './character/character-detail/character-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CharacterComponent,
     SearchComponent,
-    CharacterListingComponent
+    CharacterListingComponent,
+    CharacterDetailComponent
   ],
   imports: [
     BrowserModule,
