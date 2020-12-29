@@ -13,4 +13,9 @@ export class ApiService {
     return this.httpClient
       .get<any>(`${this.apiURL}/character/?name=${term}`)
   }
+
+  getCharacterDetail(id) {
+    return this.httpClient
+      .get<any>(`${this.apiURL}/${id}`)
+  }
 }
