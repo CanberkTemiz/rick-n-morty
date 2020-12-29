@@ -4,10 +4,10 @@
     (charactersFetched)="onCharactersFetched($event)"
 ></app-search>
 
-<div *ngIf="response" class="row">
+<div *ngIf="characters" class="row">
     <div class="card-list">
         <app-character-listing 
-            *ngFor="let char of response" 
+            *ngFor="let char of characters" 
             [character]="char"
         ></app-character-listing>
     </div>

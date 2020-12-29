@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/api.service';
+import { Character } from 'src/app/types';
 
 @Component({
   selector: 'app-character-detail',
@@ -9,7 +10,7 @@ import { ApiService } from 'src/app/api.service';
 })
 export class CharacterDetailComponent implements OnInit {
 
-  characterDetails;
+  characterDetails: Character;
 
   constructor(
     private service: ApiService,
