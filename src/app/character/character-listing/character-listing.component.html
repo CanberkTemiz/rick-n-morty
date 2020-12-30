@@ -3,6 +3,6 @@
         <img [src]="character.image" [alt]="character.name">
         <h3>{{character.name}}</h3>
         <p>{{character.location.name}}</p>
-        <p>{{ character.created }}</p>
+        <p>{{ character.created | customDate }}</p>
     </a>
 </div>
