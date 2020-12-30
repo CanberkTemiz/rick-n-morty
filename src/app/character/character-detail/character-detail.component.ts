@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/api.service';
 import { Character } from 'src/app/types';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-character-detail',
@@ -11,10 +12,12 @@ import { Character } from 'src/app/types';
 export class CharacterDetailComponent implements OnInit {
 
   characterDetails: Character;
+  id: number;
 
   constructor(
     private service: ApiService,
     private route: ActivatedRoute,
+    private _location: Location
   ) {}
 
   ngOnInit(): void {
@@ -22,9 +25,14 @@ export class CharacterDetailComponent implements OnInit {
   }
 
   getDetail() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.service.getCharacterDetail(id)
+    this.route.params.subscribe(data => this.id = +data.id )
+    // const id = +this.route.snapshot.paramMap.get('id');
+    this.service.getCharacterDetail(this.id)
       .subscribe(res => this.characterDetails = res);
+  }
+
+    backClicked() {
+    this._location.back();
   }
 
 }

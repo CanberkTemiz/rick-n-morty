@@ -33,4 +33,6 @@ export interface Character {
     location:CharacterLocation;
     image:string; 
     created: Date;
+    species?: string,
+    status?: string
 }
