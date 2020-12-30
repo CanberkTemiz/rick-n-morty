@@ -11,6 +11,7 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/api.service';
+import { SearchService } from 'src/app/search.service';
 import { ApiResponse, Character, Location } from 'src/app/types';
 
 @Component({
@@ -22,12 +23,15 @@ export class SearchComponent implements AfterViewInit {
   @Input() type: string;
   @Output() charactersFetched = new EventEmitter<ApiResponse<Character>>();
   @Output() locationsFetched = new EventEmitter<ApiResponse<Location>>();
-  @Output() term = new EventEmitter<string>();
+  // @Output() term = new EventEmitter<string>();
   @ViewChild('input') input: ElementRef;
   
   searchText = '';
 
-  constructor(private service: ApiService) {}
+  constructor(
+    private service: ApiService,
+    private searchService: SearchService
+  ) {}
 
   ngAfterViewInit(){
     fromEvent(this.input.nativeElement,'keyup')
@@ -37,7 +41,10 @@ export class SearchComponent implements AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           this.searchText = this.input.nativeElement.value;
-          this.term.emit(this.searchText);
+
+          this.searchService.term.next(this.searchText);
+
+          // this.term.emit(this.searchText);
           this.fetchDataOf(this.searchText, this.type);
         })
     )
