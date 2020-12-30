@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LocationComponent } from './location/location.component';
 import { HeaderComponent } from './header/header.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
+import { CustomDatePipe } from './custom-date.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PaginationComponent } from './shared/pagination/pagination.component';
     CharacterDetailComponent,
     LocationComponent,
     HeaderComponent,
-    PaginationComponent
+    PaginationComponent,
+    CustomDatePipe
   ],
   imports: [
     BrowserModule,
