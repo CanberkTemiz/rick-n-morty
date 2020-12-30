@@ -26,7 +26,7 @@ export class CharacterDetailComponent implements OnInit {
 
   getDetail() {
     this.route.params.subscribe(data => this.id = +data.id )
-    // const id = +this.route.snapshot.paramMap.get('id');
+  
     this.service.getCharacterDetail(this.id)
       .subscribe(res => this.characterDetails = res);
   }

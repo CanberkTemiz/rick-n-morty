@@ -1,21 +1,27 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from '../api.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { SearchService } from '../search.service';
 import { ApiResponse, Character, Info, Location } from '../types';
-
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
-export class LocationComponent {
+export class LocationComponent implements OnInit, OnDestroy {
   results: Location[] = [];
   info: Info;
   type = 'location';
   term: string;
   people$: Observable<Character[]>;
+  private termSub: Subscription;
 
-  constructor(private service: ApiService) { }
+  constructor(
+    private searchService: SearchService
+  ) { }
+
+  ngOnInit(){
+    this.termSub = this.searchService.term.subscribe(term => this.term = term);
+  }
 
   onLocationsFetched(data: ApiResponse<Location>) {
     console.log(data);
@@ -29,9 +35,8 @@ export class LocationComponent {
     this.info = data.info;
   }
 
-  //change with subjects
-  setTerm(term) {
-    this.term = term;
-  }
+  ngOnDestroy(){
+    this.termSub.unsubscribe();
+  }   
 
 }
