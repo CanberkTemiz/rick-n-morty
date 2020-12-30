@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SearchService } from '../search.service';
 import { ApiResponse, Character, Info } from '../types';
 @Component({
@@ -8,26 +8,31 @@ import { ApiResponse, Character, Info } from '../types';
   styleUrls: ['./character.component.css']
 })
 export class CharacterComponent implements OnInit, OnDestroy{
-
+  isFetching$: Observable<boolean>;
   characters: Character[] = [];
   type = 'character';
   info: Info;
   term: string;
+  isFetching = false;
   private termSub: Subscription;
 
+  
   constructor(private searchService: SearchService) { }
 
   ngOnInit(){
     this.termSub = this.searchService.term.subscribe(term => this.term = term); 
+    this.isFetching$ = this.searchService.isFetching;
   }
 
   onCharactersFetched(data: ApiResponse<Character>) {
-    this.characters = data.results;
-    this.info = data.info;
+    this.loadCharacter(data);
   }
 
   onUpdateResult(data: ApiResponse<Character>) {
-    console.log('new', data);
+    this.loadCharacter(data);
+  }
+
+  private loadCharacter(data) {
     this.characters = data.results;
     this.info = data.info;
   }

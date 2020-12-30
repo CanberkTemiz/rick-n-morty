@@ -23,7 +23,6 @@ export class SearchComponent implements AfterViewInit {
   @Input() type: string;
   @Output() charactersFetched = new EventEmitter<ApiResponse<Character>>();
   @Output() locationsFetched = new EventEmitter<ApiResponse<Location>>();
-  // @Output() term = new EventEmitter<string>();
   @ViewChild('input') input: ElementRef;
   
   searchText = '';
@@ -41,10 +40,7 @@ export class SearchComponent implements AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           this.searchText = this.input.nativeElement.value;
-
           this.searchService.term.next(this.searchText);
-
-          // this.term.emit(this.searchText);
           this.fetchDataOf(this.searchText, this.type);
         })
     )
@@ -52,9 +48,16 @@ export class SearchComponent implements AfterViewInit {
   }
 
   fetchDataOf(term, type) {
-    type === "character" 
-    ? this.service.getCharacter(term).subscribe((data) => this.charactersFetched.emit(data))
-    : this.service.getLocation(term).subscribe((data) => this.locationsFetched.emit(data))
+    if (type === "character") {
+      return this.service.getCharacter(term)
+        .subscribe((data) => {
+            this.searchService.isFetching.next(false);
+            this.charactersFetched.emit(data)
+          }
+        )
+    }
+    return this.service.getLocation(term).subscribe((data) => this.locationsFetched.emit(data))
+    
   }
 
 

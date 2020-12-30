@@ -17,8 +17,15 @@
         ></app-pagination>
     </div>
 </div>
-    
+
 <div *ngIf="characters" class="row">
+    <h1 *ngIf="isFetching$ | async">
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </h1>
     <div class="card-list">
         <app-character-listing 
             *ngFor="let char of characters" 

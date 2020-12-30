@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/api.service';
 import { Character } from 'src/app/types';
 import {Location} from '@angular/common';
+import { SearchService } from 'src/app/search.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-character-detail',
@@ -10,12 +12,12 @@ import {Location} from '@angular/common';
   styleUrls: ['./character-detail.component.css']
 })
 export class CharacterDetailComponent implements OnInit {
-
   characterDetails: Character;
   id: number;
 
   constructor(
     private service: ApiService,
+    private searchService: SearchService,
     private route: ActivatedRoute,
     private _location: Location
   ) {}
@@ -31,7 +33,7 @@ export class CharacterDetailComponent implements OnInit {
       .subscribe(res => this.characterDetails = res);
   }
 
-    backClicked() {
+  backClicked() {
     this._location.back();
   }
 
