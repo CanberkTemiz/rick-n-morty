@@ -15,7 +15,6 @@ export class CharacterComponent {
   constructor() { }
 
   onCharactersFetched(data: ApiResponse<Character>) {
-    console.log(data);
     this.characters = data.results;
     this.info = data.info;
   }
@@ -30,5 +29,4 @@ export class CharacterComponent {
   setTerm(term) {
     this.term = term;
   }
-
 }

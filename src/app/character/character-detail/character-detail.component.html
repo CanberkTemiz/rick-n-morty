@@ -1,16 +1,22 @@
-<p>card-detail works!</p>
-<div class="character-details" *ngIf="characterDetails">
-    <h2>
-        {{characterDetails.name}}
-    </h2>
-    <h3>   
-        {{characterDetails.species}}
-    </h3>
-    <h4>
-        {{characterDetails.type}}
-    </h4>
-    <h4>
-        {{characterDetails.gender}}
-    </h4>
+<div class="row" *ngIf="characterDetails">
+    <div class="col character-details">
+        <div class="card bg-light mt-3" style="width: 18rem;">
+            <div class="card-header bg-transparent border-success">
+                <h2>{{characterDetails.name}}</h2>
+            </div>
+            <img class="card-img-top" [src]="characterDetails.image" alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-text">
+                    Species: {{characterDetails.species}}
+                </h4>
+                <p class="card-text">
+                    Created: {{characterDetails.created | customDate}}
+                </p>
+                <p class="card-text">
+                    Status: {{characterDetails.status}}
+                </p>
+            </div>
+            <button (click)="backClicked()" class="btn btn-primary">Go Back</button>
+          </div>
+    </div>
 </div>
-    

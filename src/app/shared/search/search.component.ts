@@ -36,7 +36,6 @@ export class SearchComponent implements AfterViewInit {
         debounceTime(900),
         distinctUntilChanged(),
         tap(() => {
-          console.log(this.type);
           this.searchText = this.input.nativeElement.value;
           this.term.emit(this.searchText);
           this.fetchDataOf(this.searchText, this.type);
