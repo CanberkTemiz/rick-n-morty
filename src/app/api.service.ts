@@ -21,4 +21,15 @@ export class ApiService {
   getLocation(term) {
     return this.httpClient.get<ApiResponse<Location>>(`${this.apiURL}/location/?name=${term}`);
   }
+
+  getPrevOrNextPage(link) {
+    // if (type === "character") {
+    //   return this.httpClient.get<ApiResponse<Character>>(`${link}`);
+    // }
+    return this.httpClient.get<ApiResponse<any>>(`${link}`);
+  }
+
+  getExactPage(idx, term, type) {
+      return this.httpClient.get<ApiResponse<any>>(`${this.apiURL}/${type}/?page=${idx}&name=${term}`);
+  }
 }

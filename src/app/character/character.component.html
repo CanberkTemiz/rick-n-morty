@@ -3,7 +3,19 @@
         <app-search 
             [type]="type" 
             (charactersFetched)="onCharactersFetched($event)"
+            (term)="setTerm($event)"
         ></app-search>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-pagination 
+            [type]="type"
+            [info]="info"
+            [term]="term"
+            (updatedData)="onUpdateResult($event)"
+        ></app-pagination>
     </div>
 </div>
     

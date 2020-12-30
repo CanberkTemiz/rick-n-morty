@@ -1,0 +1,21 @@
+<nav class="pagination-wrapper">
+    <ul *ngIf="info" class="pagination">
+        <li 
+            class="page-item" 
+            [ngClass]="info.prev ? '' : 'disabled'"
+        >
+            <a class="page-link" (click)="getPrevOrNextPage(info.prev)">Previous</a>
+        </li>
+
+        <li 
+            *ngFor="let page of pages(info.pages); let idx = index" 
+            class="page-item"
+        ><a class="page-link" (click)="getExactPage(idx+1)" >{{idx + 1}}</a>
+        </li>
+
+        <li 
+            class="page-item"
+            [ngClass]="info.next ? '' : 'disabled'"
+        ><a class="page-link" (click)="getPrevOrNextPage(info.next)">Next</a></li>
+    </ul>
+</nav>

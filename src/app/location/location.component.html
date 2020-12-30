@@ -3,6 +3,59 @@
         <app-search 
             [type]="type" 
             (locationsFetched)="onLocationsFetched($event)"
+            (term)="setTerm($event)"
         ></app-search>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-pagination 
+            [type]="type"
+            [info]="info"
+            [term]="term"
+            (updatedData)="onUpdateResult($event)"
+        ></app-pagination>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive card">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Dimention</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Residents#</th>
+                </tr>
+            </thead>
+            
+            <tbody *ngFor="let result of results; let idx = index;" id="accordion">
+                <tr
+                    class="collapsed"
+                    data-toggle="collapse" 
+                    [attr.data-target]="'#' + idx"
+                    [attr.aria-controls]="idx"
+                    aria-expanded="false"
+                >
+                    <th scope="row">{{idx}}</th>
+                    <td>{{ result.name }}
+                        <div *ngIf="result.residents" id="{{idx}}" class="panel-collapse collapse" data-parent="#accordion">
+                            <ul *ngFor="let resident of people$ | async">
+                                <li>{{ resident.name }}</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>{{ result.dimension }}</td>
+                    <td>{{ result.type }}</td>
+                    <td>{{ result.created }}</td>
+                    <td>{{ result.residents.length }}</td>
+                </tr>           
+            </tbody>
+
+        </table>
     </div>
 </div>

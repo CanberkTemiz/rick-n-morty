@@ -11,6 +11,7 @@ import { CharacterDetailComponent } from './character/character-detail/character
 import { AppRoutingModule } from './app-routing.module';
 import { LocationComponent } from './location/location.component';
 import { HeaderComponent } from './header/header.component';
+import { PaginationComponent } from './shared/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HeaderComponent } from './header/header.component';
     CharacterListingComponent,
     CharacterDetailComponent,
     LocationComponent,
-    HeaderComponent
+    HeaderComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
