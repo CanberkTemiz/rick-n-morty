@@ -8,6 +8,7 @@ import { ApiResponse, Character, Info, Location } from '../types';
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit, OnDestroy {
+  isFetching$: Observable<boolean>;
   results: Location[] = [];
   info: Info;
   type = 'location';
@@ -21,16 +22,18 @@ export class LocationComponent implements OnInit, OnDestroy {
 
   ngOnInit(){
     this.termSub = this.searchService.term.subscribe(term => this.term = term);
+    this.isFetching$ = this.searchService.isFetching;
   }
 
   onLocationsFetched(data: ApiResponse<Location>) {
-    console.log(data);
-    this.results = data.results;
-    this.info = data.info;
+    this.loadLocation(data);
   }
 
   onUpdateResult(data: ApiResponse<Location>) {
-    console.log('new', data);
+    this.loadLocation(data);
+  }
+
+  private loadLocation(data){
     this.results = data.results;
     this.info = data.info;
   }
