@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
-import { Character, Info, Location } from '../types';
+import { ApiResponse, Character, Info, Location } from '../types';
 
 @Component({
   selector: 'app-location',
@@ -17,10 +17,21 @@ export class LocationComponent {
 
   constructor(private service: ApiService) { }
 
-  onLocationsFetched(data: any) {
+  onLocationsFetched(data: ApiResponse<Location>) {
     console.log(data);
     this.results = data.results;
     this.info = data.info;
+  }
+
+  onUpdateResult(data: ApiResponse<Location>) {
+    console.log('new', data);
+    this.results = data.results;
+    this.info = data.info;
+  }
+
+  //change with subjects
+  setTerm(term) {
+    this.term = term;
   }
 
 }

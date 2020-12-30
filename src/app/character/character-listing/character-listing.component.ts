@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Character } from 'src/app/types';
 
 @Component({
@@ -6,13 +6,9 @@ import { Character } from 'src/app/types';
   templateUrl: './character-listing.component.html',
   styleUrls: ['./character-listing.component.css']
 })
-export class CharacterListingComponent implements OnInit {
+export class CharacterListingComponent{
   @Input() character: Character;
 
   constructor() {}
-
-  ngOnInit(): void {
-    console.log(this.character);
-  }
 
 }
