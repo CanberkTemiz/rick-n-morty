@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/api.service';
 import { Character } from 'src/app/types';
-import {Location} from '@angular/common';
-import { SearchService } from 'src/app/search.service';
-import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-character-detail',
@@ -17,7 +15,6 @@ export class CharacterDetailComponent implements OnInit {
 
   constructor(
     private service: ApiService,
-    private searchService: SearchService,
     private route: ActivatedRoute,
     private _location: Location
   ) {}
@@ -28,9 +25,8 @@ export class CharacterDetailComponent implements OnInit {
 
   getDetail() {
     this.route.params.subscribe(data => this.id = +data.id )
-  
-    this.service.getCharacterDetail(this.id)
-      .subscribe(res => this.characterDetails = res);
+
+    this.service.getCharacterDetail(this.id).subscribe(res => this.characterDetails = res);
   }
 
   backClicked() {

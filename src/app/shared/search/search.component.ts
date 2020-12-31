@@ -21,8 +21,6 @@ import { ApiResponse, Character, Location } from 'src/app/types';
 })
 export class SearchComponent implements AfterViewInit {
   @Input() type: string;
-  @Output() charactersFetched = new EventEmitter<ApiResponse<Character>>();
-  @Output() locationsFetched = new EventEmitter<ApiResponse<Location>>();
   @ViewChild('input') input: ElementRef;
   
   searchText = '';
@@ -49,16 +47,10 @@ export class SearchComponent implements AfterViewInit {
 
   fetchDataOf(term, type) {
     if (type === "character") {
-      return this.service.getCharacter(term)
-        .subscribe((data) => {
-            this.searchService.isFetching.next(false);
-            this.charactersFetched.emit(data)
-          }
-        )
-    }
-    return this.service.getLocation(term).subscribe((data) => this.locationsFetched.emit(data))
-    
+      this.service.getCharacter(term)
+      this.searchService.isFetching.next(false);
+      return;
+    }      
+    this.service.getLocation(term);
   }
-
-
 }
