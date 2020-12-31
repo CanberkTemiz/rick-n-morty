@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { SearchService } from './search.service';
 import { ApiResponse, Character, Location } from './types';
 
@@ -7,6 +8,9 @@ import { ApiResponse, Character, Location } from './types';
   providedIn: 'root'
 })
 export class ApiService{
+  
+  sectionData = new Subject<ApiResponse<any>>();
+  
   private apiURL  = "https://rickandmortyapi.com/api";
 
   constructor(
@@ -16,7 +20,9 @@ export class ApiService{
 
   getCharacter(term) {
     this.isFetching();
-    return this.httpClient.get<ApiResponse<Character>>(`${this.apiURL}/character/?name=${term}`)
+    this.httpClient
+      .get<ApiResponse<Character>>(`${this.apiURL}/character/?name=${term}`)
+      .subscribe(data => this.sectionData.next(data));
   }
 
   getCharacterDetail(id) {
@@ -26,17 +32,23 @@ export class ApiService{
 
   getLocation(term) {
     this.isFetching();
-    return this.httpClient.get<ApiResponse<Location>>(`${this.apiURL}/location/?name=${term}`);
+    this.httpClient
+      .get<ApiResponse<Location>>(`${this.apiURL}/location/?name=${term}`)
+      .subscribe(data => this.sectionData.next(data));
   }
 
   getPrevOrNextPage(link) {
     this.isFetching();
-    return this.httpClient.get<ApiResponse<any>>(`${link}`);
+    this.httpClient
+      .get<ApiResponse<any>>(`${link}`)
+      .subscribe(data => this.sectionData.next(data));
   }
 
   getExactPage(idx, term, type) {
     this.isFetching();
-    return this.httpClient.get<ApiResponse<any>>(`${this.apiURL}/${type}/?page=${idx}&name=${term}`);
+    this.httpClient
+      .get<ApiResponse<any>>(`${this.apiURL}/${type}/?page=${idx}&name=${term}`)
+      .subscribe(data => this.sectionData.next(data))
   }
 
   private isFetching(){

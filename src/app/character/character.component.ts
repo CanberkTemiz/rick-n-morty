@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { ApiService } from '../api.service';
 import { SearchService } from '../search.service';
 import { ApiResponse, Character, Info } from '../types';
 @Component({
@@ -8,36 +9,33 @@ import { ApiResponse, Character, Info } from '../types';
   styleUrls: ['./character.component.css']
 })
 export class CharacterComponent implements OnInit, OnDestroy{
-  isFetching$: Observable<boolean>;
   characters: Character[] = [];
   type = 'character';
   info: Info;
   term: string;
   isFetching = false;
   private termSub: Subscription;
-
+  private fetchSub: Subscription;
   
-  constructor(private searchService: SearchService) { }
+  constructor(
+    private service: ApiService,
+    private searchService: SearchService,
+  ) { }
 
   ngOnInit(){
     this.termSub = this.searchService.term.subscribe(term => this.term = term); 
-    this.isFetching$ = this.searchService.isFetching;
+    this.fetchSub = this.searchService.isFetching.subscribe(data => this.isFetching = data);
+
+    this.service.sectionData.subscribe((data: ApiResponse<Character>) => this.loadCharacters(data));
   }
 
-  onCharactersFetched(data: ApiResponse<Character>) {
-    this.loadCharacter(data);
-  }
-
-  onUpdateResult(data: ApiResponse<Character>) {
-    this.loadCharacter(data);
-  }
-
-  private loadCharacter(data) {
+  private loadCharacters(data) {
     this.characters = data.results;
     this.info = data.info;
   }
 
   ngOnDestroy(){
     this.termSub.unsubscribe();
+    this.fetchSub.unsubscribe();
   }
 }

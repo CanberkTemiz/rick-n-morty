@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
-import { ApiResponse, Character, Info, Location } from 'src/app/types';
+import { SearchService } from 'src/app/search.service';
+import { ApiResponse,  Info } from 'src/app/types';
 
 @Component({
   selector: 'app-pagination',
@@ -11,26 +13,21 @@ export class PaginationComponent {
   @Input() info: Info
   @Input() term: string
   @Input() type: string
-  @Output() updatedData = new EventEmitter<ApiResponse<any>>();
   
-  constructor(private service: ApiService) { }
+  constructor(
+    private service: ApiService
+  ) { }
 
-  // when next or prev clicked
   getPrevOrNextPage(page) {
-    this.service.getPrevOrNextPage(page).subscribe(data => {
-      this.updatedData.emit(data)
-    });
+    this.service.getPrevOrNextPage(page);
   }
 
   getExactPage(num) {
-    this.service.getExactPage(num, this.term, this.type).subscribe(data => {
-      this.updatedData.emit(data)
-    })
+    this.service.getExactPage(num, this.term, this.type);
   }
 
   // to create page buttons for pagination
   pages(n: number): Array<number> {
     return Array(n);
   }
-
 }

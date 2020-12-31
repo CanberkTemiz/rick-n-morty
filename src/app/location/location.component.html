@@ -2,7 +2,6 @@
     <div class="col jumbotron">
         <app-search 
             [type]="type" 
-            (locationsFetched)="onLocationsFetched($event)"
         ></app-search>
     </div>
 </div>
@@ -13,13 +12,12 @@
             [type]="type"
             [info]="info"
             [term]="term"
-            (updatedData)="onUpdateResult($event)"
         ></app-pagination>
     </div>
 </div>
 
 <div class="row">
-    <h1 *ngIf="isFetching$ | async">
+    <h1 *ngIf="isFetching">
         <div class="text-center">
             <div class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
@@ -39,7 +37,7 @@
                 </tr>
             </thead>
             
-            <tbody *ngFor="let result of results; let idx = index;" id="accordion">
+            <tbody *ngFor="let location of locations; let idx = index;" id="accordion">
                 <tr
                     class="collapsed"
                     data-toggle="collapse" 
@@ -48,17 +46,17 @@
                     aria-expanded="false"
                 >
                     <th scope="row">{{idx}}</th>
-                    <td>{{ result.name }}
-                        <div *ngIf="result.residents" id="{{idx}}" class="panel-collapse collapse" data-parent="#accordion">
+                    <td>{{ location.name }}
+                        <div *ngIf="location.residents" id="{{idx}}" class="panel-collapse collapse" data-parent="#accordion">
                             <ul *ngFor="let resident of people$ | async">
                                 <li>{{ resident.name }}</li>
                             </ul>
                         </div>
                     </td>
-                    <td>{{ result.dimension }}</td>
-                    <td>{{ result.type }}</td>
-                    <td>{{ result.created | customDate }}</td>
-                    <td>{{ result.residents.length }}</td>
+                    <td>{{ location.dimension }}</td>
+                    <td>{{ location.type }}</td>
+                    <td>{{ location.created | customDate }}</td>
+                    <td>{{ location.residents.length }}</td>
                 </tr>           
             </tbody>
 
