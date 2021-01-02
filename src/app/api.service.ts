@@ -10,8 +10,9 @@ import { ApiResponse, Character, Location } from './types';
 export class ApiService{
   
   sectionData = new Subject<ApiResponse<any>>();
-  
-  private apiURL  = "https://rickandmortyapi.com/api";
+  error = new Subject<string>();
+
+  private apiURL = "https://rickandmortyapi.com/api";
 
   constructor(
     private httpClient: HttpClient,
@@ -19,39 +20,36 @@ export class ApiService{
   ) { }
 
   getCharacter(term) {
-    this.isFetching();
     this.httpClient
       .get<ApiResponse<Character>>(`${this.apiURL}/character/?name=${term}`)
-      .subscribe(data => this.sectionData.next(data));
+      .subscribe(
+        data => this.sectionData.next(data), 
+        error => this.error.next(error.message)
+      );
   }
 
   getCharacterDetail(id) {
-    this.isFetching();
     return this.httpClient.get<Character>(`${this.apiURL}/character/${id}`)
   }
 
   getLocation(term) {
-    this.isFetching();
     this.httpClient
       .get<ApiResponse<Location>>(`${this.apiURL}/location/?name=${term}`)
-      .subscribe(data => this.sectionData.next(data));
+      .subscribe(
+        data => this.sectionData.next(data),
+        error => this.error.next(error.message)
+      );
   }
 
   getPrevOrNextPage(link) {
-    this.isFetching();
     this.httpClient
       .get<ApiResponse<any>>(`${link}`)
       .subscribe(data => this.sectionData.next(data));
   }
 
   getExactPage(idx, term, type) {
-    this.isFetching();
     this.httpClient
       .get<ApiResponse<any>>(`${this.apiURL}/${type}/?page=${idx}&name=${term}`)
       .subscribe(data => this.sectionData.next(data))
-  }
-
-  private isFetching(){
-    return this.searchService.isFetching.next(true);
   }
 }

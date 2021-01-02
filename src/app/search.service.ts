@@ -5,5 +5,4 @@ import { Subject } from 'rxjs';
 
 export class SearchService {
     term = new Subject<string>();
-    isFetching = new Subject<boolean>();
 }
