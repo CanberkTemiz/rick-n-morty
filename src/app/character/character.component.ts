@@ -13,9 +13,10 @@ export class CharacterComponent implements OnInit, OnDestroy{
   type = 'character';
   info: Info;
   term: string;
+  error = null;
   isFetching = false;
   private termSub: Subscription;
-  private fetchSub: Subscription;
+  private errorSub: Subscription;
   
   constructor(
     private service: ApiService,
@@ -24,9 +25,14 @@ export class CharacterComponent implements OnInit, OnDestroy{
 
   ngOnInit(){
     this.termSub = this.searchService.term.subscribe(term => this.term = term); 
-    this.fetchSub = this.searchService.isFetching.subscribe(data => this.isFetching = data);
-
-    this.service.sectionData.subscribe((data: ApiResponse<Character>) => this.loadCharacters(data));
+    this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
+    
+    this.isFetching = true;
+    this.service.sectionData.subscribe(
+      (data: ApiResponse<Character>) => {
+        this.isFetching = false;
+        this.loadCharacters(data)
+    });
   }
 
   private loadCharacters(data) {
@@ -34,8 +40,12 @@ export class CharacterComponent implements OnInit, OnDestroy{
     this.info = data.info;
   }
 
+  onHandleError(){
+    this.error = null;
+  }
+
   ngOnDestroy(){
     this.termSub.unsubscribe();
-    this.fetchSub.unsubscribe();
+    this.errorSub.unsubscribe();
   }
 }

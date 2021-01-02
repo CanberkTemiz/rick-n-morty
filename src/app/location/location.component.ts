@@ -14,9 +14,10 @@ export class LocationComponent implements OnInit, OnDestroy {
   type = 'location';
   term: string;
   isFetching = false;
+  error = null;
   people$: Observable<Character[]>;
   private termSub: Subscription;
-  private fetchSub: Subscription;
+  private errorSub: Subscription;
 
   constructor(
     private service: ApiService,
@@ -25,8 +26,7 @@ export class LocationComponent implements OnInit, OnDestroy {
 
   ngOnInit(){
     this.termSub = this.searchService.term.subscribe(term => this.term = term);
-    this.fetchSub = this.searchService.isFetching.subscribe(data => this.isFetching = data);
-    
+    this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
     this.service.sectionData.subscribe((data: ApiResponse<Location>) => this.loadLocations(data));
   }
 
@@ -35,9 +35,13 @@ export class LocationComponent implements OnInit, OnDestroy {
     this.info = data.info;
   }
 
+  onHandleError(){
+    this.error = null;
+  }
+
   ngOnDestroy(){
     this.termSub.unsubscribe();
-    this.fetchSub.unsubscribe();
+    this.errorSub.unsubscribe();
   }   
 
 }
