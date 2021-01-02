@@ -38,8 +38,11 @@ export class SearchComponent implements AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           this.searchText = this.input.nativeElement.value;
-          this.searchService.term.next(this.searchText);
-          this.fetchDataOf(this.searchText, this.type);
+          if ( this.searchText.length > 2) {
+            this.searchService.term.next(this.searchText);
+            this.fetchDataOf(this.searchText, this.type);
+          }
+          return;
         })
     )
     .subscribe();
