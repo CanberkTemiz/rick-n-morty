@@ -51,6 +51,7 @@ export class SearchComponent implements AfterViewInit {
   fetchDataOf(term, type) {
     if (type === "character") {
       this.service.getCharacter(term)
+      
       // this.searchService.isFetching.next(false);
       return;
     }      

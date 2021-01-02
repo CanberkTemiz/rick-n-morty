@@ -25,6 +25,7 @@ export class LocationComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(){
+    localStorage.setItem('term', null);
     this.termSub = this.searchService.term.subscribe(term => this.term = term);
     this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
     this.service.sectionData.subscribe((data: ApiResponse<Location>) => this.loadLocations(data));

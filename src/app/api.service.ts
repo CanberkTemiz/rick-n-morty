@@ -20,6 +20,7 @@ export class ApiService{
   ) { }
 
   getCharacter(term) {
+    localStorage.setItem('term', term);
     this.httpClient
       .get<ApiResponse<Character>>(`${this.apiURL}/character/?name=${term}`)
       .subscribe(
@@ -30,6 +31,10 @@ export class ApiService{
 
   getCharacterDetail(id) {
     return this.httpClient.get<Character>(`${this.apiURL}/character/${id}`)
+  }
+
+  getPreviousSearchedQuery(term) {
+    return this.httpClient.get<Character>(`${this.apiURL}/character/?name=${term}`)
   }
 
   getLocation(term) {

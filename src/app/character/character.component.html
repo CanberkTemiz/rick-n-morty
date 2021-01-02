@@ -29,6 +29,7 @@
         <app-character-listing 
             *ngFor="let char of characters" 
             [character]="char"
+            (click)="onClickToAnyCard()"
         ></app-character-listing>
     </div>
 </div> 
