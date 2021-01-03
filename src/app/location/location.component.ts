@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { ApiService } from '../api.service';
 import { SearchService } from '../search.service';
 import { ApiResponse, Character, Info, Location } from '../types';
@@ -15,10 +16,10 @@ export class LocationComponent implements OnInit, OnDestroy {
   term: string;
   isFetching = false;
   error = null;
-  people$: Observable<Character[]>;
+  residentNames: string[] = [];
   private termSub: Subscription;
   private errorSub: Subscription;
-
+  
   constructor(
     private service: ApiService,
     private searchService: SearchService
@@ -32,12 +33,28 @@ export class LocationComponent implements OnInit, OnDestroy {
   }
 
   private loadLocations(data){
+    console.log(data);
     this.locations = data.results;
     this.info = data.info;
   }
 
   onHandleError(){
     this.error = null;
+  }
+
+  handleRowClick(residents) {
+    if (residents.length === 0) {
+      return;
+    }
+    
+    let characterNumberArray = [];
+    residents.map(url => {
+      let characterId = url.split("/");
+      characterNumberArray.push( +characterId[5]);
+    });
+
+    this.service.getMultipleCharactersForLocation(characterNumberArray)
+      .subscribe(data => this.residentNames = [...data] );
   }
 
   ngOnDestroy(){

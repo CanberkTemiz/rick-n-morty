@@ -38,19 +38,23 @@
                 </tr>
             </thead>
             
-            <tbody *ngFor="let location of locations; let idx = index;" id="accordion">
+            <tbody id="accordion">
                 <tr
-                    class="collapsed"
+                    *ngFor="let location of locations; let idx = index;"
                     data-toggle="collapse" 
-                    [attr.data-target]="'#' + idx"
-                    [attr.aria-controls]="idx"
+                    [attr.data-target]="'#accordion-' + idx"
+                    [attr.aria-controls]="'accordion'+idx"
                     aria-expanded="false"
+                    (click)="handleRowClick(location.residents)"
                 >
                     <th scope="row">{{idx}}</th>
-                    <td>{{ location.name }}
-                        <div *ngIf="location.residents" id="{{idx}}" class="panel-collapse collapse" data-parent="#accordion">
-                            <ul *ngFor="let resident of people$ | async">
-                                <li>{{ resident.name }}</li>
+                    <td >
+                        {{location.name}}
+                        <div [id]="'accordion-' + idx" class="panel-collapse collapse" data-parent="#accordion">
+                            <ul *ngFor="let name of residentNames">
+                                <li>
+                                    {{name}}
+                                </li>
                             </ul>
                         </div>
                     </td>
@@ -60,7 +64,6 @@
                     <td>{{ location.residents.length }}</td>
                 </tr>           
             </tbody>
-
         </table>
     </div>
 </div>
