@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { SearchService } from './search.service';
+import { map } from 'rxjs/operators';
 import { ApiResponse, Character, Location } from './types';
 
 @Injectable({
@@ -16,10 +16,10 @@ export class ApiService{
 
   constructor(
     private httpClient: HttpClient,
-    private searchService: SearchService
   ) { }
 
   getCharacter(term) {
+    localStorage.setItem('term', term);
     this.httpClient
       .get<ApiResponse<Character>>(`${this.apiURL}/character/?name=${term}`)
       .subscribe(
@@ -32,6 +32,10 @@ export class ApiService{
     return this.httpClient.get<Character>(`${this.apiURL}/character/${id}`)
   }
 
+  getPreviousSearchedQuery(term) {
+    return this.httpClient.get<Character>(`${this.apiURL}/character/?name=${term}`)
+  }
+
   getLocation(term) {
     this.httpClient
       .get<ApiResponse<Location>>(`${this.apiURL}/location/?name=${term}`)
@@ -39,6 +43,14 @@ export class ApiService{
         data => this.sectionData.next(data),
         error => this.error.next(error.message)
       );
+  }
+
+  getMultipleCharactersForLocation(characterIds) {
+    return this.httpClient
+      .get<Character[]>(`${this.apiURL}/character/${characterIds}`)
+      .pipe(
+        map(data => data.map(character => character.name))
+      )
   }
 
   getPrevOrNextPage(link) {

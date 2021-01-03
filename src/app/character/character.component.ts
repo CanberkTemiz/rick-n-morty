@@ -1,6 +1,8 @@
+import { query } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
+import { AuthService } from '../auth.service';
 import { SearchService } from '../search.service';
 import { ApiResponse, Character, Info } from '../types';
 @Component({
@@ -15,15 +17,23 @@ export class CharacterComponent implements OnInit, OnDestroy{
   term: string;
   error = null;
   isFetching = false;
+  result;
   private termSub: Subscription;
   private errorSub: Subscription;
   
   constructor(
     private service: ApiService,
     private searchService: SearchService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(){
+    if(localStorage.getItem('term')){
+      this.term = localStorage.getItem('term');
+      this.service.getPreviousSearchedQuery(this.term).subscribe(data => {
+        this.loadCharacters(data)
+      })
+    }
     this.termSub = this.searchService.term.subscribe(term => this.term = term); 
     this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
     
@@ -44,8 +54,13 @@ export class CharacterComponent implements OnInit, OnDestroy{
     this.error = null;
   }
 
+  onClickToAnyCard(){
+    this.authService.login();
+  }
+
   ngOnDestroy(){
     this.termSub.unsubscribe();
     this.errorSub.unsubscribe();
+    this.term = ''
   }
 }

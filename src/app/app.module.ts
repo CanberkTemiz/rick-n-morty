@@ -13,6 +13,8 @@ import { LocationComponent } from './location/location.component';
 import { HeaderComponent } from './header/header.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { CustomDatePipe } from './custom-date.pipe';
+import { AuthGuard } from './auto-guard.service';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import { CustomDatePipe } from './custom-date.pipe';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthGuard, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
