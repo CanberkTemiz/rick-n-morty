@@ -14,7 +14,8 @@ import { HeaderComponent } from './header/header.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { CustomDatePipe } from './custom-date.pipe';
 import { AuthGuard } from './auto-guard.service';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
+
 
 @NgModule({
   declarations: [

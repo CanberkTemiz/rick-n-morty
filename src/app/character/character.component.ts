@@ -1,9 +1,9 @@
-import { query } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { ApiService } from '../api.service';
-import { AuthService } from '../auth.service';
-import { SearchService } from '../search.service';
+import { Subscription } from 'rxjs';
+import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
+import { LoadingService } from '../services/loading.service';
+import { SearchService } from '../services/search.service';
 import { ApiResponse, Character, Info } from '../types';
 @Component({
   selector: 'app-character',
@@ -16,15 +16,18 @@ export class CharacterComponent implements OnInit, OnDestroy{
   info: Info;
   term: string;
   error = null;
-  isFetching = false;
-  result;
+  isLoading = false;
+ 
+
   private termSub: Subscription;
+  private loadingSub: Subscription;
   private errorSub: Subscription;
   
   constructor(
     private service: ApiService,
     private searchService: SearchService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(){
@@ -36,12 +39,12 @@ export class CharacterComponent implements OnInit, OnDestroy{
     }
     this.termSub = this.searchService.term.subscribe(term => this.term = term); 
     this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
+    this.loadingService.isLoading$.subscribe(data => this.isLoading = data);
     
-    this.isFetching = true;
     this.service.sectionData.subscribe(
       (data: ApiResponse<Character>) => {
-        this.isFetching = false;
         this.loadCharacters(data)
+        this.loadingService.isLoading$.next(false);
     });
   }
 
@@ -52,15 +55,13 @@ export class CharacterComponent implements OnInit, OnDestroy{
 
   onHandleError(){
     this.error = null;
-  }
-
-  onClickToAnyCard(){
-    this.authService.login();
+    localStorage.removeItem('term');
   }
 
   ngOnDestroy(){
     this.termSub.unsubscribe();
     this.errorSub.unsubscribe();
+
     this.term = ''
   }
 }

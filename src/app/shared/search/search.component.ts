@@ -10,9 +10,9 @@ import {
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 
-import { ApiService } from 'src/app/api.service';
-import { SearchService } from 'src/app/search.service';
-import { ApiResponse, Character, Location } from 'src/app/types';
+import { ApiService } from 'src/app/services/api.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
   selector: 'app-search',
@@ -27,7 +27,8 @@ export class SearchComponent implements AfterViewInit {
 
   constructor(
     private service: ApiService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private loadingService: LoadingService
   ) {}
 
   ngAfterViewInit(){
@@ -39,6 +40,7 @@ export class SearchComponent implements AfterViewInit {
         tap(() => {
           this.searchText = this.input.nativeElement.value;
           if ( this.searchText.length > 2) {
+            this.loadingService.isLoading$.next(true);
             this.searchService.term.next(this.searchText);
             this.fetchDataOf(this.searchText, this.type);
           }

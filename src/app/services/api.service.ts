@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiResponse, Character, Location } from './types';
+import { map, tap } from 'rxjs/operators';
+import { ApiResponse, Character, Location } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,16 @@ export class ApiService{
     return this.httpClient
       .get<Character[]>(`${this.apiURL}/character/${characterIds}`)
       .pipe(
-        map(data => data.map(character => character.name))
+        tap(data => {
+          console.log(data.length)
+        }),
+        map(data => {
+          if(data.length > 1) {
+            return data.map(character => character.name)
+          } 
+          return [data.name];
+        })
+        
       )
   }
 
