@@ -15,11 +15,10 @@ export class LocationComponent implements OnInit, OnDestroy {
   info: Info;
   type = 'location';
   term: string;
-  isLoading = false;
+  isLoading = null;
   error = null;
-  residentNames: string[] = [];
-  private termSub: Subscription;
-  private errorSub: Subscription;
+  residentNames = [];
+  private subscriptions: Subscription[] = []
   
   constructor(
     private service: ApiService,
@@ -29,16 +28,16 @@ export class LocationComponent implements OnInit, OnDestroy {
 
   ngOnInit(){
     localStorage.removeItem('term');
-    this.termSub = this.searchService.term.subscribe(term => this.term = term);
-    this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
-    this.loadingService.isLoading$.subscribe(data => this.isLoading = data);
+    this.subscriptions.push(this.searchService.term.subscribe(term => this.term = term))
+    this.subscriptions.push(this.service.error.subscribe(errorMessage => this.error = errorMessage))
+    this.subscriptions.push(this.loadingService.isLoading.subscribe(data => this.isLoading = data))    
     this.service.sectionData.subscribe((data: ApiResponse<Location>) => this.loadLocations(data));
   }
 
   private loadLocations(data){
-    console.log(data)
     this.locations = data.results;
     this.info = data.info;
+    this.loadingService.isLoading.next(false);
   }
 
   onHandleError(){
@@ -46,6 +45,7 @@ export class LocationComponent implements OnInit, OnDestroy {
   }
 
   handleRowClick(residents) {
+    console.log("redisent count: ", residents.length)
     if (residents.length === 0) {
       return;
     }
@@ -57,11 +57,13 @@ export class LocationComponent implements OnInit, OnDestroy {
     });
     
     this.service.getMultipleCharactersForLocation(characterNumberArray)
-      .subscribe(data => this.residentNames = [...data] );
+      .subscribe(data => {
+        console.log("multi data" , data)
+        this.residentNames = data 
+      });
   }
 
   ngOnDestroy(){
-    this.termSub.unsubscribe();
-    this.errorSub.unsubscribe();
+    this.subscriptions.forEach(subs => subs.unsubscribe())
   }   
 }
