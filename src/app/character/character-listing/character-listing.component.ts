@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { Character } from 'src/app/types';
 
 @Component({
@@ -9,6 +10,9 @@ import { Character } from 'src/app/types';
 export class CharacterListingComponent{
   @Input() character: Character;
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
+  onClickToAnyCard(){
+    this.authService.login();
+  }
 }

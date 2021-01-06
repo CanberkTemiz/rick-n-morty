@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from 'src/app/api.service';
-import { Character } from 'src/app/types';
 import { Location } from '@angular/common';
+
+import { ApiService } from 'src/app/services/api.service';
+import { Character } from 'src/app/types';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-character-detail',
@@ -16,10 +18,12 @@ export class CharacterDetailComponent implements OnInit {
   constructor(
     private service: ApiService,
     private route: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.authService.login();
     this.getDetail();
   }
 

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
-import { SearchService } from 'src/app/search.service';
+import { ApiService } from 'src/app/services/api.service';
+import { SearchService } from 'src/app/services/search.service';
 import { ApiResponse,  Info } from 'src/app/types';
 
 @Component({

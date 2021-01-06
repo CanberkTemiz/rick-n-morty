@@ -1,5 +1,9 @@
 <div class="card-item card text-center ">
-    <a class="thumbnail" routerLink="/character/detail/{{character.id}}">
+    <a 
+        class="thumbnail" 
+        routerLink="/character/detail/{{character.id}}"
+        (click)="onClickToAnyCard()"
+    >
         <img [src]="character.image" [alt]="character.name">
         <h3>{{character.name}}</h3>
         <p>{{character.location.name}}</p>

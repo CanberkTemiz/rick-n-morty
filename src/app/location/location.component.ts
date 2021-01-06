@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { ApiService } from '../api.service';
-import { SearchService } from '../search.service';
-import { ApiResponse, Character, Info, Location } from '../types';
+import { Subscription } from 'rxjs';
+import { ApiService } from '../services/api.service';
+import { LoadingService } from '../services/loading.service';
+import { SearchService } from '../services/search.service';
+import { ApiResponse, Info, Location } from '../types';
+
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
@@ -14,7 +15,7 @@ export class LocationComponent implements OnInit, OnDestroy {
   info: Info;
   type = 'location';
   term: string;
-  isFetching = false;
+  isLoading = false;
   error = null;
   residentNames: string[] = [];
   private termSub: Subscription;
@@ -22,18 +23,20 @@ export class LocationComponent implements OnInit, OnDestroy {
   
   constructor(
     private service: ApiService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(){
-    localStorage.setItem('term', null);
+    localStorage.removeItem('term');
     this.termSub = this.searchService.term.subscribe(term => this.term = term);
     this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
+    this.loadingService.isLoading$.subscribe(data => this.isLoading = data);
     this.service.sectionData.subscribe((data: ApiResponse<Location>) => this.loadLocations(data));
   }
 
   private loadLocations(data){
-    console.log(data);
+    console.log(data)
     this.locations = data.results;
     this.info = data.info;
   }
@@ -52,7 +55,7 @@ export class LocationComponent implements OnInit, OnDestroy {
       let characterId = url.split("/");
       characterNumberArray.push( +characterId[5]);
     });
-
+    
     this.service.getMultipleCharactersForLocation(characterNumberArray)
       .subscribe(data => this.residentNames = [...data] );
   }
@@ -61,5 +64,4 @@ export class LocationComponent implements OnInit, OnDestroy {
     this.termSub.unsubscribe();
     this.errorSub.unsubscribe();
   }   
-
 }
