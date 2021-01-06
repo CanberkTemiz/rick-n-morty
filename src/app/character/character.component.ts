@@ -17,16 +17,11 @@ export class CharacterComponent implements OnInit, OnDestroy{
   term: string;
   error = null;
   isLoading = false;
- 
+  private subscriptions: Subscription[] = []
 
-  private termSub: Subscription;
-  private loadingSub: Subscription;
-  private errorSub: Subscription;
-  
   constructor(
     private service: ApiService,
     private searchService: SearchService,
-    private authService: AuthService,
     private loadingService: LoadingService
   ) { }
 
@@ -37,14 +32,14 @@ export class CharacterComponent implements OnInit, OnDestroy{
         this.loadCharacters(data)
       })
     }
-    this.termSub = this.searchService.term.subscribe(term => this.term = term); 
-    this.errorSub = this.service.error.subscribe(errorMessage => this.error = errorMessage);
-    this.loadingService.isLoading$.subscribe(data => this.isLoading = data);
+    this.subscriptions.push(this.searchService.term.subscribe(term => this.term = term))
+    this.subscriptions.push(this.service.error.subscribe(errorMessage => this.error = errorMessage))
+    this.subscriptions.push(this.loadingService.isLoading.subscribe(data => this.isLoading = data))
     
     this.service.sectionData.subscribe(
       (data: ApiResponse<Character>) => {
         this.loadCharacters(data)
-        this.loadingService.isLoading$.next(false);
+        this.loadingService.isLoading.next(false);
     });
   }
 
@@ -55,13 +50,12 @@ export class CharacterComponent implements OnInit, OnDestroy{
 
   onHandleError(){
     this.error = null;
+    this.loadingService.isLoading.next(false);
     localStorage.removeItem('term');
   }
 
   ngOnDestroy(){
-    this.termSub.unsubscribe();
-    this.errorSub.unsubscribe();
-
+    this.subscriptions.forEach(subs => subs.unsubscribe())
     this.term = ''
   }
 }

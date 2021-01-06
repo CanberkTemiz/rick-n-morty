@@ -39,16 +39,23 @@
             <tbody id="accordion">
                 <tr
                     *ngFor="let location of locations; let idx = index;"
+                    [ngClass]="location.residents.length <= 0 ? 'pointer-events: none' : ''"
                     data-toggle="collapse" 
                     [attr.data-target]="'#accordion-' + idx"
                     [attr.aria-controls]="'accordion'+idx"
                     aria-expanded="false"
+                    
                     (click)="handleRowClick(location.residents)"
                 >
                     <th scope="row">{{idx}}</th>
                     <td >
                         {{location.name}}
-                        <div [id]="'accordion-' + idx" class="panel-collapse collapse" data-parent="#accordion">
+                        <div 
+                            *ngIf="location.residents.length" 
+                            [id]="'accordion-' + idx" 
+                            class="panel-collapse collapse" 
+                            data-parent="#accordion"
+                        >
                             <ul *ngFor="let name of residentNames">
                                 <li>
                                     {{name}}

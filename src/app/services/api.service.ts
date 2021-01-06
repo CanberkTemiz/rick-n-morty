@@ -49,14 +49,11 @@ export class ApiService{
     return this.httpClient
       .get<Character[]>(`${this.apiURL}/character/${characterIds}`)
       .pipe(
-        tap(data => {
-          console.log(data.length)
-        }),
         map(data => {
           if(data.length > 1) {
             return data.map(character => character.name)
           } 
-          return [data.name];
+          return data;
         })
         
       )
